@@ -25,7 +25,7 @@ pub struct ProjectRule {
     pub content: String,
 }
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Clone)]
 struct RuleAtPath {
     parent_path: PathBuf,
     warp_md: Option<ProjectRule>,
@@ -69,7 +69,7 @@ fn matches_rules_pattern(file_name_str: &str) -> bool {
     false
 }
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Clone)]
 struct ProjectRules {
     rules: Vec<RuleAtPath>,
 }
@@ -345,7 +345,7 @@ impl ProjectContextModel {
                     return;
                 }
 
-                let existing_rules = me.path_to_rules.remove(&path_clone);
+                let existing_rules = me.path_to_rules.get(&path_clone).cloned();
                 let repo_path = path_clone.clone();
                 if let Some(rules) = existing_rules {
                     let repo_path_for_closure = repo_path.clone();
